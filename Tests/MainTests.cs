@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using GameOfLife;
+﻿using GameOfLife;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -17,10 +15,10 @@ namespace Tests
         [TestMethod]
         public void TestGridCreation()
         {
-            var main = new Main();
-            var result = main.CreateGrid(1, 2);
+            var grid = new Grid();
+            var result = grid.CreateGrid(1, 2);
 
-            Assert.AreEqual(typeof(System.Boolean[,]), result.GetType());
+            Assert.AreEqual(typeof(bool[,]), result.GetType());
         }
     }
 }
