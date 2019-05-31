@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-
-namespace GameOfLife
+﻿namespace GameOfLife
 { 
     public class Grid
     {
@@ -10,6 +7,8 @@ namespace GameOfLife
             return new bool[x, y];
         }
 
+        //google gebruikt voor het checken van de lengte van X / Y van grid
+        
         public bool[,] CalculateNextGeneration(bool[,] currentGrid)
         {
             var newGrid = this.CreateGrid(currentGrid.GetLength(0), currentGrid.GetLength(1));
@@ -17,20 +16,33 @@ namespace GameOfLife
             var x = 0;
             var y = 0;
 
-            while(x < currentGrid.GetLength(0))
+            while (y < currentGrid.GetLength(1))
             {
-                var neighboursAlive = CalculateAliveNeighbours(currentGrid, x , y);
-                if (currentGrid[x,y]) // if cell is alive in current generation
+                while (x < currentGrid.GetLength(0))
                 {
-                    
+                    var neighborsAlive = CalculateAliveNeighbours(currentGrid, x, y);
+                    if (currentGrid[x, y]) // if cell is alive in current generation
+                    {
+                        if (neighborsAlive > 3 || neighborsAlive < 2)
+                        {
+                            newGrid[x, y] = false;
+                        }
+                        else
+                        {
+                            newGrid[x, y] = true;
+                        }
+                    }
+                    else //if cell is dead in current generation
+                    {
+                        if (neighborsAlive == 3)
+                        {
+                            newGrid[x, y] = true;
+                        }
+                    }
+                    x++;
                 }
-                else //if cell is dead in current generation
-                {
-                    
-                }
-                x++;
+                y++;
             }
-
 
             return newGrid;
         }
