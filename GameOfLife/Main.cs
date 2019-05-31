@@ -17,14 +17,14 @@ namespace GameOfLife
 
         public bool[,] CalculateNextGeneration(bool[,] currentGrid)
         {
-            var newGrid = this.CreateGrid(currentGrid.GetLength(0), currentGrid.GetLength(1));
+            var xUpperBound = currentGrid.GetUpperBound(0);
+            var yUpperBound = currentGrid.GetUpperBound(1);
+            var newGrid = this.CreateGrid(xUpperBound, yUpperBound);
 
-            var x = 0;
-            var y = 0;
 
-            while (y < currentGrid.GetLength(1))
+            for (var y = 0; y < yUpperBound; y++)
             {
-                while (x < currentGrid.GetLength(0))
+                for (var x = 0; x < xUpperBound; x++)
                 {
                     var neighborsAlive = CalculateAliveNeighbors(currentGrid, x, y);
                     if (currentGrid[x, y]) // if cell is alive in current generation
@@ -45,11 +45,8 @@ namespace GameOfLife
                             newGrid[x, y] = true;
                         }
                     }
-
-                    x++;
+                    
                 }
-
-                y++;
             }
 
             return newGrid;
@@ -104,7 +101,7 @@ namespace GameOfLife
 
         public int CalculateAliveNeighbors2(bool[,] currentGrid, int x, int y)
         {
-            var arrayOfNeighbors = GetAllNeighbors(currentGrid, x,y);
+            var arrayOfNeighbors = GetAllNeighbors(currentGrid, x, y);
             return arrayOfNeighbors.Count(neighbor => neighbor == true);
         }
 
@@ -112,7 +109,7 @@ namespace GameOfLife
         {
             var arrayOfNeighbors = new[]
             {
-                currentGrid[x - 1, y -1],
+                currentGrid[x - 1, y - 1],
                 currentGrid[x - 1, y],
                 currentGrid[x - 1, y + 1],
                 currentGrid[x, y - 1],
@@ -122,6 +119,11 @@ namespace GameOfLife
                 currentGrid[x + 1, y + 1],
             };
             return arrayOfNeighbors;
+        }
+
+        public IEnumerable<bool> GetAllNeighbors2(bool[,] currentGrid, int x, int y)
+        {
+            throw NotImplementedException();
         }
     }
 }
