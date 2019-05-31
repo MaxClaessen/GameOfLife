@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace GameOfLife
 {
-    public class Class1
+    public class Main
     {
+        public bool[,] CreateGrid(int x, int y)
+        {
+            return new bool[x, y];
+        }
     }
 }
