@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Security.Policy;
 
 namespace GameOfLife
 {
@@ -13,7 +14,7 @@ namespace GameOfLife
             return new bool[x, y];
         }
 
-        //google gebruikt voor het checken van de lengte van X / Y van grid
+        //google gebruikt voor het checken van de lengte van X / Y van grid 
 
         public bool[,] CalculateNextGeneration(bool[,] currentGrid)
         {
@@ -45,10 +46,8 @@ namespace GameOfLife
                             newGrid[x, y] = true;
                         }
                     }
-                    
                 }
             }
-
             return newGrid;
         }
 
@@ -56,42 +55,42 @@ namespace GameOfLife
         {
             var neighbors = 0;
 
-            if (currentGrid[x - 1, y - 1])
+            if (CalculateIfAlive(currentGrid, x - 1, y - 1))
             {
                 neighbors++;
             }
 
-            if (currentGrid[x - 1, y])
+            if (CalculateIfAlive(currentGrid, x - 1, y))
             {
                 neighbors++;
             }
 
-            if (currentGrid[x - 1, y + 1])
+            if (CalculateIfAlive(currentGrid, x - 1, y + 1))
             {
                 neighbors++;
             }
 
-            if (currentGrid[x, y - 1])
+            if (CalculateIfAlive(currentGrid, x, y - 1))
             {
                 neighbors++;
             }
 
-            if (currentGrid[x, y + 1])
+            if (CalculateIfAlive(currentGrid, x, y + 1))
             {
                 neighbors++;
             }
 
-            if (currentGrid[x + 1, y - 1])
+            if (CalculateIfAlive(currentGrid, x + 1, y - 1))
+            {
+                neighbors++;
+            }
+            
+            if (CalculateIfAlive(currentGrid, x + 1, y))
             {
                 neighbors++;
             }
 
-            if (currentGrid[x + 1, y])
-            {
-                neighbors++;
-            }
-
-            if (currentGrid[x + 1, y + 1])
+            if (CalculateIfAlive(currentGrid, x + 1, y + 1))
             {
                 neighbors++;
             }
@@ -99,31 +98,40 @@ namespace GameOfLife
             return neighbors;
         }
 
-        public int CalculateAliveNeighbors2(bool[,] currentGrid, int x, int y)
+        private static bool CalculateIfAlive(bool[,] currentGrid, int x, int y)
         {
-            var arrayOfNeighbors = GetAllNeighbors(currentGrid, x, y);
-            return arrayOfNeighbors.Count(neighbor => neighbor == true);
-        }
-
-        public IEnumerable<bool> GetAllNeighbors(bool[,] currentGrid, int x, int y)
-        {
-            var arrayOfNeighbors = new[]
+            if (x <= currentGrid.GetUpperBound(0) && x >= currentGrid.GetLowerBound(0))
             {
-                currentGrid[x - 1, y - 1],
-                currentGrid[x - 1, y],
-                currentGrid[x - 1, y + 1],
-                currentGrid[x, y - 1],
-                currentGrid[x, y + 1],
-                currentGrid[x + 1, y - 1],
-                currentGrid[x + 1, y],
-                currentGrid[x + 1, y + 1],
-            };
-            return arrayOfNeighbors;
+                if (y <= currentGrid.GetUpperBound(1) && y >= currentGrid.GetLowerBound(1))
+                {
+                    return currentGrid[x,y];
+                }
+            }
+            return false;
         }
+        
+        //does make sure that its within bounds
+        //public int CalculateAliveNeighbors2(bool[,] currentGrid, int x, int y)
+        //{
+        //    var arrayOfNeighbors = GetAllNeighbors2(currentGrid, x, y);
+        //    return arrayOfNeighbors.Count(neighbor => neighbor == true);
+        //}
 
-        public IEnumerable<bool> GetAllNeighbors2(bool[,] currentGrid, int x, int y)
-        {
-            throw NotImplementedException();
-        }
+        //public IEnumerable<bool> GetAllNeighbors2(bool[,] currentGrid, int x, int y)
+        //{
+        //    var arrayOfNeighbors = new[]
+        //    {
+        //        currentGrid[x - 1, y - 1],
+        //        currentGrid[x - 1, y],
+        //        currentGrid[x - 1, y + 1],
+        //        currentGrid[x, y - 1],
+        //        currentGrid[x, y + 1],
+        //        currentGrid[x + 1, y - 1],
+        //        currentGrid[x + 1, y],
+        //        currentGrid[x + 1, y + 1],
+        //    };
+        //    return arrayOfNeighbors;
+        //}
+
     }
 }
